@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1 class="my-5">Popular Recipes</h1>
+<div class="row row-cols-3 g-2">
+    {% for recipe in recipes %}
+    <div class="col">
+        <div class="p-3 border rounded bg-light text-dark text-center h-100">
+            <a href="{% url 'recipes.detail' pk=recipe.id %}" class="text-dark text-decoration-none">
+                <h3>{{ recipe.title |truncatechars:10 }}</h3>
+            </a>
+            <p>Likes: {{ recipe.likes }}</p>
+            {% if recipe.is_public %}
+            <span class="badge bg-success">Public</span>
+            {% else %}
+            <span class="badge bg-secondary">Private</span>
+            {% endif %}
+            <p class="text-small">Posted by: {{ recipe.author.username }}</p>
+            {% if recipe.author == request.user %}
+            <p class="text-danger small">This is your recipe</p>
+            {% endif %}
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

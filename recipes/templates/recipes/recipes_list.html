@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1 class="my-5">These are your recipes:</h1>
+
+<div class="row row-cols-3 g-2">
+    {% for recipe in recipes %}
+    <div class="col">
+        <div class="p-3 border rounded bg-light text-dark text-center h-100">
+            <a href="{% url 'recipes.detail' pk=recipe.id %}" class="text-blue text-decoration-none">
+                <h3>{{ recipe.title }}</h3>
+            </a>
+            {{ recipe.description|truncatechars:10 }}
+            <div class="mt-2">
+                {% if recipe.is_public %}
+                <span class="badge bg-success">Public</span>
+                {% else %}
+                <span class="badge bg-secondary">Private</span>
+                {% endif %}
+            </div>
+
+            <!-- If the recipe belongs to the current user, show edit and delete buttons -->
+            {% if recipe.author == request.user %}
+            <div class="mt-2">
+                <!-- <a href="{% url 'recipes.update' pk=recipe.id %}" class="btn btn-primary btn-sm">Edit</a>
+                    <a href="{% url 'recipes.delete' pk=recipe.id %}" class="btn btn-danger btn-sm">Delete</a> -->
+                <a href="{% url 'recipes.share' pk=recipe.id %}" class="btn btn-info btn-sm">Share</a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    {% endfor %}
+
+</div>
+{% endblock %}

@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="border rounded p-3">
+    {% if recipe.is_public %}
+    <p class="text-muted">This recipe is <span class="badge bg-success">Public</span>. Be careful when sharing sensitive
+        information</p>
+    {% else %}
+
+    <p class="text-muted">This recipe is <span class="badge bg-secondary">Private</span>. Only you can see it.</p>
+    {% endif %}
+    <h1 class="my-5">{{ recipe.title }}</h1>
+    <p>{{ recipe.description }}</p>
+    <p># of Likes:</p>
+    <p>{{ recipe.likes }}</p>
+    <p>Posted by {{ recipe.author.username }}</p>
+</div>
+
+<form method="POST" action="{% url 'recipes.add_like' pk=recipe.id %}" style="display:inline;">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary my-5">Like</button>
+</form>
+
+
+<!-- Options restricted to the recipe's owner -->
+{% if recipe.is_public and recipe.author == request.user %}
+<form method="POST" action="{% url 'recipes.mark_private' pk=recipe.id %}" style="display:inline;">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-secondary my-5">Mark as Private</button>
+</form>
+{% elif not recipe.is_public and recipe.author == request.user %}
+<form method="POST" action="{% url 'recipes.mark_public' pk=recipe.id %}" style="display:inline;">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-success my-5">Mark as Public</button>
+</form>
+{% endif %}
+
+{% if recipe.author == request.user %}
+<a href="{% url 'recipes.update' pk=recipe.id %}" class="btn btn-warning">Edit</a>
+<a href="{% url 'recipes.delete' pk=recipe.id %}" class="btn btn-danger">Delete</a>
+{% endif %}
+
+<!-- End of restricted options to the recipe's owner -->
+
+<a href="{% url 'recipes.share' pk=recipe.id %}" class="btn btn-info">Share</a>
+<a href="{% url 'recipes.list' %}" class="btn btn-light my-5">Back</a>
+{% endblock %}
+
+
+<!-- Instructor's approach for this part of Challenge Class 08 -->
+<!-- 
+{% csrf_token %}
+{{ form.as_p }}
+
+ <button type="submit" class="btn btn-secondary my-5">
+    {% if recipe.is_public %}
+        Make it Private
+    {% else %}
+        Make it Public
+    {% endif %}
+ </button>
+ 
+-->

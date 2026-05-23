@@ -12,5 +12,13 @@ class Recipe(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     likes = models.PositiveSmallIntegerField(default=0)
-    is_public = models.BooleanField(default=False) 
+    is_public = models.BooleanField(default=False)
+
+    @property
+    def text(self):
+        return self.description
+
+    @property
+    def user(self):
+        return self.author
 
