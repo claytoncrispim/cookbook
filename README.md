@@ -10,7 +10,7 @@ Built as a portfolio project inspired by the Smartnotes app from LinkedIn Learni
 
 ## 📷 Screenshot
 
-![A screenshot of the Cookbook application showing the recipe interface and Bootstrap-based layout.](./static/images/Screenshot%20from%202026-05-24%2017-49-17.png)
+![A screenshot of the Cookbook application showing the recipe interface and Bootstrap-based layout.](./static/images/Screenshot%20from%202026-05-24%2018-12-24.png)
 
 ---
 
