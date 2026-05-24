@@ -40,11 +40,13 @@ class RecipePopularListView(LoginRequiredMixin, ListView):
     model = Recipe
     template_name = 'recipes/recipes_popular.html'
     context_object_name = 'recipes'
-    queryset = Recipe.objects.filter(likes__gte=1).order_by('-likes', '-updated_at', '-created_at')
     login_url = '/login'
 
-    # def get_queryset(self):
-    #     return Recipe.objects.filter(is_public=True).order_by('-likes', '-updated_at')
+    def get_queryset(self):
+        return Recipe.objects.filter(
+            Q(likes__gte=1),
+            Q(is_public=True) | Q(author=self.request.user),
+        ).order_by('-likes', '-updated_at', '-created_at')
 
 
 class RecipeDetailView(LoginRequiredMixin, DetailView):
