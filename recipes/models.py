@@ -10,7 +10,7 @@ class Recipe(models.Model):
     instructions = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='recipes')
     likes = models.PositiveSmallIntegerField(default=0)
     is_public = models.BooleanField(default=False)
 

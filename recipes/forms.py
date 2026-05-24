@@ -18,3 +18,8 @@ class RecipeForm(forms.ModelForm):
             'ingredients': 'Ingredients (one per line)',
             'instructions': 'Cooking Instructions',
         }
+    
+    def clean_title(self):
+        title = self.cleaned_data.get('title')
+
+        return title

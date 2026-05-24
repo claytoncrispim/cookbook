@@ -12,7 +12,7 @@ from .forms import RecipeForm
 class RecipeCreateView(LoginRequiredMixin, CreateView):
     model = Recipe
     form_class = RecipeForm
-    success_url = reverse_lazy('recipes.list')
+    success_url = '/smart/recipes'
     template_name = 'recipes/recipes_form.html'
     login_url = '/login'
 
@@ -30,17 +30,18 @@ class RecipeListView(LoginRequiredMixin, ListView):
     login_url = '/login'
 
     def get_queryset(self):
-        return Recipe.objects.filter(author=self.request.user).order_by('-updated_at')
+        return self.request.user.recipes.all().order_by('-is_public', '-created_at')
 
 
 class RecipePopularListView(LoginRequiredMixin, ListView):
     model = Recipe
     template_name = 'recipes/recipes_popular.html'
     context_object_name = 'recipes'
+    queryset = Recipe.objects.filter(likes__gte=1).order_by('-likes', '-updated_at', '-created_at')
     login_url = '/login'
 
-    def get_queryset(self):
-        return Recipe.objects.filter(is_public=True).order_by('-likes', '-updated_at')
+    # def get_queryset(self):
+    #     return Recipe.objects.filter(is_public=True).order_by('-likes', '-updated_at')
 
 
 class RecipeDetailView(LoginRequiredMixin, DetailView):
@@ -57,7 +58,7 @@ class RecipeUpdateView(LoginRequiredMixin, UpdateView):
     model = Recipe
     form_class = RecipeForm
     template_name = 'recipes/recipes_form.html'
-    success_url = reverse_lazy('recipes.list')
+    success_url = '/smart/recipes'
     login_url = '/login'
 
     def get_queryset(self):
@@ -68,21 +69,38 @@ class RecipeDeleteView(LoginRequiredMixin, DeleteView):
     model = Recipe
     template_name = 'recipes/recipes_delete.html'
     context_object_name = 'recipe'
-    success_url = reverse_lazy('recipes.list')
+    success_url = 'smart/recipes'
     login_url = '/login'
 
     def get_queryset(self):
         return Recipe.objects.filter(author=self.request.user)
 
 
-class RecipeShareView(LoginRequiredMixin, DetailView):
+class RecipeShareView(DetailView):
     model = Recipe
     template_name = 'recipes/recipes_share.html'
     context_object_name = 'recipe'
-    login_url = '/login'
 
-    def get_queryset(self):
-        return Recipe.objects.filter(Q(author=self.request.user) | Q(is_public=True))
+    def get_object(self, queryset=None):
+        return Recipe.objects.filter(pk=self.kwargs['pk']).first()
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        recipe = context.get('recipe')
+
+        if recipe is None:
+            context['show_not_found_message'] = True
+            context['can_view_recipe'] = False
+            context['is_owner'] = False
+            return context
+
+        is_owner = self.request.user.is_authenticated and recipe.author_id == self.request.user.id
+        can_view_recipe = recipe.is_public or is_owner
+
+        context['show_not_found_message'] = not can_view_recipe
+        context['can_view_recipe'] = can_view_recipe
+        context['is_owner'] = is_owner
+        return context
 
 
 def add_like(request, pk):

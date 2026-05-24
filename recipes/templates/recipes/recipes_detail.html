@@ -3,7 +3,7 @@
 {% block content %}
 <div class="border rounded p-3">
     {% if recipe.is_public %}
-    <p class="text-muted">This recipe is <span class="badge bg-success">Public</span>. Be careful when sharing sensitive
+    <p class="text-muted">This recipe is <span class="badge bg-warning">Public</span>. Be careful when sharing sensitive
         information</p>
     {% else %}
 
@@ -11,7 +11,11 @@
     {% endif %}
     <h1 class="my-5">{{ recipe.title }}</h1>
     <p>{{ recipe.description }}</p>
-    <p># of Likes:</p>
+    {% for ingredient in recipe.ingredients.splitlines %}
+        <p>{{ ingredient }}</p>
+    {% endfor %}
+    <p>{{ recipe.instructions }}</p>
+    <p>Likes:</p>
     <p>{{ recipe.likes }}</p>
     <p>Posted by {{ recipe.author.username }}</p>
 </div>

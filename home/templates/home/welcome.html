@@ -2,13 +2,12 @@
 
 {% block content %}
 <div class="p-3 border rounded">
-    <h1>Welcome to Cookbook</h1>
-    <p>This is the home page.</p>
-    <p>Today is {{ today }}</p>
-    <a href="{% url 'recipes.list' %}" class="btn btn-primary">Check out these recipes!</a>
+    <h1>Welcome to Cookbook</h1>    
+    
+    <a href="{% url 'recipes.list' %}" class="btn btn-warning">Check out these recipes!</a>
 
     <div class="p-3 border rounded mt-3">
         {% include "home/advantages.html" %}
-    </div>
+    </div>   
 </div>
 {% endblock %}
