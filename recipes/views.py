@@ -1,6 +1,7 @@
 from django.db.models import F, Q
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect
+from django.contrib.auth.decorators import login_required
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DeleteView, DetailView, ListView, UpdateView
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -30,7 +31,9 @@ class RecipeListView(LoginRequiredMixin, ListView):
     login_url = '/login'
 
     def get_queryset(self):
-        return self.request.user.recipes.all().order_by('-is_public', '-created_at')
+        return Recipe.objects.filter(
+            Q(is_public=True) | Q(author=self.request.user)
+        ).order_by('-is_public', '-created_at')
 
 
 class RecipePopularListView(LoginRequiredMixin, ListView):
@@ -69,7 +72,7 @@ class RecipeDeleteView(LoginRequiredMixin, DeleteView):
     model = Recipe
     template_name = 'recipes/recipes_delete.html'
     context_object_name = 'recipe'
-    success_url = 'smart/recipes'
+    success_url = reverse_lazy('recipes.list')
     login_url = '/login'
 
     def get_queryset(self):
@@ -103,13 +106,19 @@ class RecipeShareView(DetailView):
         return context
 
 
+@login_required(login_url='/login')
 def add_like(request, pk):
-    recipe = get_object_or_404(Recipe, pk=pk)
+    recipe = get_object_or_404(
+        Recipe,
+        Q(pk=pk),
+        Q(is_public=True) | Q(author=request.user),
+    )
     recipe.likes = F('likes') + 1
     recipe.save(update_fields=['likes'])
     return redirect('recipes.detail', pk=pk)
 
 
+@login_required(login_url='/login')
 def mark_private(request, pk):
     recipe = get_object_or_404(Recipe, pk=pk, author=request.user)
     recipe.is_public = False
@@ -117,6 +126,7 @@ def mark_private(request, pk):
     return redirect('recipes.share', pk=pk)
 
 
+@login_required(login_url='/login')
 def mark_public(request, pk):
     recipe = get_object_or_404(Recipe, pk=pk, author=request.user)
     recipe.is_public = True
