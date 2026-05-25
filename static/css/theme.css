@@ -1,0 +1,78 @@
+:root {
+    --cb-yellow-200: #fff3b0;
+    --cb-yellow-500: #ffd000;
+    --cb-orange-100: #ffedd5;
+    --cb-orange-200: #fed7aa;
+    --cb-orange-400: #ff6a00;
+    --cb-orange-700: #c2410c;
+    --cb-slate-700: #334155;
+}
+
+.cb-nav {
+    background: linear-gradient(90deg, var(--cb-yellow-500), #ffe08c 45%, var(--cb-orange-400));
+}
+
+.cb-card {
+    background-color: var(--cb-orange-100);
+    border-color: var(--cb-orange-200) !important;
+}
+
+.cb-card-link {
+    color: var(--cb-orange-700);
+}
+
+.cb-card-link:hover {
+    color: var(--cb-orange-400);
+}
+
+.cb-share-btn {
+    background-color: var(--cb-yellow-500);
+    border-color: var(--cb-yellow-500);
+    color: #3a2a00;
+}
+
+.cb-share-btn:hover {
+    background-color: var(--cb-orange-400);
+    border-color: var(--cb-orange-400);
+    color: #fff;
+}
+
+.cb-badge-public {
+    background-color: var(--cb-orange-400);
+    color: #fff;
+}
+
+.cb-badge-private {
+    background-color: var(--cb-slate-700);
+    color: #fff;
+}
+
+.cb-owner-text {
+    color: var(--cb-orange-700);
+}
+
+.cb-btn-private {
+    background-color: var(--cb-slate-700);
+    border-color: var(--cb-slate-700);
+    color: #fff;
+}
+
+.cb-btn-private:hover {
+    background-color: #1f2937;
+    border-color: #1f2937;
+    color: #fff;
+}
+
+.cb-post-pill {
+    color: var(--cb-orange-700);
+    background-color: var(--cb-yellow-200);
+    border: 1px solid var(--cb-orange-200);
+}
+
+.cb-copy-link {
+    color: var(--cb-orange-700);
+}
+
+.cb-copy-link:hover {
+    color: var(--cb-orange-400);
+}

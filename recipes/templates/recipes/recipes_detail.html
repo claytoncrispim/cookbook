@@ -1,13 +1,13 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="border rounded p-3">
+<div class="border rounded p-3 cb-card">
     {% if recipe.is_public %}
-    <p class="text-muted">This recipe is <span class="badge bg-warning">Public</span>. Be careful when sharing sensitive
+    <p class="text-muted">This recipe is <span class="badge cb-badge-public">Public</span>. Be careful when sharing sensitive
         information</p>
     {% else %}
 
-    <p class="text-muted">This recipe is <span class="badge bg-secondary">Private</span>. Only you can see it.</p>
+    <p class="text-muted">This recipe is <span class="badge cb-badge-private">Private</span>. Only you can see it.</p>
     {% endif %}
     <h1 class="my-5">{{ recipe.title }}</h1>
     <p>{{ recipe.description }}</p>
@@ -23,7 +23,7 @@
 <form method="POST" action="{% url 'recipes.add_like' pk=recipe.id %}" style="display:inline;">
     {% csrf_token %}
     {{ form.as_p }}
-    <button type="submit" class="btn btn-primary my-5">Like</button>
+    <button type="submit" class="btn cb-share-btn my-5">Like</button>
 </form>
 
 
@@ -32,13 +32,13 @@
 <form method="POST" action="{% url 'recipes.mark_private' pk=recipe.id %}" style="display:inline;">
     {% csrf_token %}
     {{ form.as_p }}
-    <button type="submit" class="btn btn-secondary my-5">Mark as Private</button>
+    <button type="submit" class="btn cb-btn-private my-5">Mark as Private</button>
 </form>
 {% elif not recipe.is_public and recipe.author == request.user %}
 <form method="POST" action="{% url 'recipes.mark_public' pk=recipe.id %}" style="display:inline;">
     {% csrf_token %}
     {{ form.as_p }}
-    <button type="submit" class="btn btn-success my-5">Mark as Public</button>
+    <button type="submit" class="btn cb-share-btn my-5">Mark as Public</button>
 </form>
 {% endif %}
 

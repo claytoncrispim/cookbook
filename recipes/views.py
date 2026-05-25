@@ -108,6 +108,16 @@ class RecipeShareView(DetailView):
         return context
 
 
+class AuthorRecipesListView(LoginRequiredMixin, ListView):
+    model = Recipe
+    template_name = 'recipes/recipes_list.html'
+    context_object_name = 'recipes'
+    login_url = '/login'
+
+    def get_queryset(self):
+        return Recipe.objects.filter(author=self.request.user).order_by('-created_at')
+
+
 @login_required(login_url='/login')
 def add_like(request, pk):
     recipe = get_object_or_404(
@@ -117,6 +127,7 @@ def add_like(request, pk):
     )
     recipe.likes = F('likes') + 1
     recipe.save(update_fields=['likes'])
+    recipe.refresh_from_db(fields=['likes'])
     return redirect('recipes.detail', pk=pk)
 
 
@@ -125,6 +136,7 @@ def mark_private(request, pk):
     recipe = get_object_or_404(Recipe, pk=pk, author=request.user)
     recipe.is_public = False
     recipe.save(update_fields=['is_public'])
+    recipe.refresh_from_db(fields=['is_public'])
     return redirect('recipes.share', pk=pk)
 
 
@@ -133,4 +145,5 @@ def mark_public(request, pk):
     recipe = get_object_or_404(Recipe, pk=pk, author=request.user)
     recipe.is_public = True
     recipe.save(update_fields=['is_public'])
+    recipe.refresh_from_db(fields=['is_public'])
     return redirect('recipes.share', pk=pk)

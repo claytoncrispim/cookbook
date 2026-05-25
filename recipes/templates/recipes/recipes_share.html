@@ -7,11 +7,10 @@
 </div>
 <a href="{% url 'recipes.list' %}" class="btn btn-light my-5">Back</a>
 {% elif can_view_recipe %}
-<div class="border rounded p-3">
+<div class="border rounded p-3 cb-card">
     <h1 class="my-5">{{ recipe.title }}</h1>
     <p>{{ recipe.description }}</p>
-    <p
-        class="d-inline-flex mb-3 px-2 py-1 fw-semibold text-success bg-success-subtle border border-success-subtle rounded-2">
+    <p class="d-inline-flex mb-3 px-2 py-1 fw-semibold rounded-2 cb-post-pill">
         Posted by
         {% if recipe.author == request.user %}
         you
@@ -28,7 +27,7 @@
     <p>
         <input type="text" value="{{ request.build_absolute_uri }}" id="shareLink" readonly>
     </p>
-    <a href="{{ request.build_absolute_uri }}" onclick="copyToClipboard()" id="copyBtn">
+    <a href="{{ request.build_absolute_uri }}" onclick="copyToClipboard(); return false;" id="copyBtn" class="cb-copy-link">
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-copy"
             viewBox="0 0 16 16">
             <path fill-rule="evenodd"
@@ -43,14 +42,14 @@
 <form method="POST" action="{% url 'recipes.mark_private' pk=recipe.id %}" style="display:inline;">
     {% csrf_token %}
     {{ form.as_p }}
-    <button type="submit" class="btn btn-secondary my-5">Mark as Private</button>
+    <button type="submit" class="btn cb-btn-private my-5">Mark as Private</button>
 </form>
 <a href="{% url 'recipes.list' %}" class="btn btn-light my-5">Back</a>
 {% else %}
 <form method="POST" action="{% url 'recipes.mark_public' pk=recipe.id %}" style="display:inline;">
     {% csrf_token %}
     {{ form.as_p }}
-    <button type="submit" class="btn btn-success my-5">Mark as Public</button>
+    <button type="submit" class="btn cb-share-btn my-5">Mark as Public</button>
 </form>
 <div class="alert alert-danger my-3">
     <span class="text-dark">You must mark this recipe as public to share it.</span>
