@@ -60,6 +60,14 @@ class RecipeDetailView(DetailView):
 
         return Recipe.objects.filter(is_public=True)
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        recipe = context['recipe']
+        context['is_owner'] = (
+            self.request.user.is_authenticated and recipe.author_id == self.request.user.id
+        )
+        return context
+
 
 class RecipeUpdateView(LoginRequiredMixin, UpdateView):
     model = Recipe
