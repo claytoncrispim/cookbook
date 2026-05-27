@@ -4,6 +4,7 @@ services:
     env: python
     plan: free
     buildCommand: pip install -r requirements.txt && python manage.py collectstatic --noinput
+    preDeployCommand: python manage.py migrate --noinput
     startCommand: gunicorn cookbook.wsgi:application
     envVars:
       - key: SECRET_KEY
@@ -11,9 +12,9 @@ services:
       - key: DEBUG
         value: "False"
       - key: ALLOWED_HOSTS
-        value: cookbook-web.onrender.com
+        value: cookbook-web-4w16.onrender.com,cookbook-web.onrender.com
       - key: CSRF_TRUSTED_ORIGINS
-        value: https://cookbook-web.onrender.com
+        value: https://cookbook-web-4w16.onrender.com,https://cookbook-web.onrender.com
       - key: DATABASE_URL
         fromDatabase:
           name: cookbook-db
