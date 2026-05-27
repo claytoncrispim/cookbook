@@ -8,7 +8,9 @@
 <a href="{% url 'recipes.list' %}" class="btn btn-light my-5">Back</a>
 {% elif can_view_recipe %}
 <div class="border rounded p-3 cb-card">
-   <a href="{% url 'recipes.detail' pk=recipe.id %}" class="cb-card-link text-decoration-none"><h1 class="my-5">{{ recipe.title }}</h1></a>
+    <a href="{% url 'recipes.detail' pk=recipe.id %}" class="cb-card-link text-decoration-none">
+        <h1 class="my-5">{{ recipe.title }}</h1>
+    </a>
     <p>{{ recipe.description }}</p>
     <p class="d-inline-flex mb-3 px-2 py-1 fw-semibold rounded-2 cb-post-pill">
         Posted by
@@ -25,9 +27,9 @@
 <div class="alert alert-info my-3">
     Shareable link:
     <p>
-        <input type="text" value="{{ request.build_absolute_uri }}" id="shareLink" readonly>
+        <input type="text" value="{{ share_url }}" id="shareLink" readonly>
     </p>
-    <a href="{{ request.build_absolute_uri }}" onclick="copyToClipboard(); return false;" id="copyBtn" class="cb-copy-link">
+    <a href="{{ share_url }}" onclick="copyToClipboard(); return false;" id="copyBtn" class="cb-copy-link">
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-copy"
             viewBox="0 0 16 16">
             <path fill-rule="evenodd"

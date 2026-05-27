@@ -2,7 +2,7 @@ from django.db.models import F, Q
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
-from django.urls import reverse_lazy
+from django.urls import reverse, reverse_lazy
 from django.views.generic import CreateView, DeleteView, DetailView, ListView, UpdateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 
@@ -107,6 +107,9 @@ class RecipeShareView(DetailView):
         context['show_not_found_message'] = not can_view_recipe
         context['can_view_recipe'] = can_view_recipe
         context['is_owner'] = is_owner
+        context['share_url'] = self.request.build_absolute_uri(
+            reverse('recipes.detail', kwargs={'pk': recipe.pk})
+        )
         return context
 
 
