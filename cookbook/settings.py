@@ -147,3 +147,22 @@ SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 # Auth redirects
 LOGIN_REDIRECT_URL = 'recipes.list'
 LOGOUT_REDIRECT_URL = 'home'
+
+
+# Ensure production exceptions are emitted to stdout/stderr so Render captures tracebacks.
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'loggers': {
+        'django.request': {
+            'handlers': ['console'],
+            'level': 'ERROR',
+            'propagate': False,
+        },
+    },
+}
