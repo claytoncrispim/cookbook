@@ -81,3 +81,7 @@ staticfiles/
 # OS files
 .DS_Store
 Thumbs.db
+
+# Password Manager files
+*.kdbx
+cookbook-render-kc
