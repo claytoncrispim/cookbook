@@ -5,7 +5,7 @@ services:
     plan: free
     buildCommand: pip install -r requirements.txt && python manage.py collectstatic --noinput
     preDeployCommand: python manage.py migrate --noinput
-    startCommand: gunicorn cookbook.wsgi:application
+    startCommand: python manage.py migrate --noinput && gunicorn cookbook.wsgi:application
     envVars:
       - key: SECRET_KEY
         generateValue: true
