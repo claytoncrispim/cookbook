@@ -8,7 +8,7 @@
 <a href="{% url 'recipes.list' %}" class="btn btn-light my-5">Back</a>
 {% elif can_view_recipe %}
 <div class="border rounded p-3 cb-card">
-    <h1 class="my-5">{{ recipe.title }}</h1>
+   <a href="{% url 'recipes.detail' pk=recipe.id %}" class="cb-card-link text-decoration-none"><h1 class="my-5">{{ recipe.title }}</h1></a>
     <p>{{ recipe.description }}</p>
     <p class="d-inline-flex mb-3 px-2 py-1 fw-semibold rounded-2 cb-post-pill">
         Posted by
