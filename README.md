@@ -8,6 +8,12 @@ Built as a portfolio project inspired by the Smartnotes app from LinkedIn Learni
 
 ---
 
+## Live Demo
+
+https://cookbook-web-4w16.onrender.com/
+
+---
+
 ## 📷 Screenshot
 
 ![A screenshot of the Cookbook application showing the recipe interface and Bootstrap-based layout.](./static/images/Screenshot%20from%202026-05-24%2018-12-24.png)
