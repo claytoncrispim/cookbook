@@ -49,14 +49,16 @@ class RecipePopularListView(LoginRequiredMixin, ListView):
         ).order_by('-likes', '-updated_at', '-created_at')
 
 
-class RecipeDetailView(LoginRequiredMixin, DetailView):
+class RecipeDetailView(DetailView):
     model = Recipe
     template_name = 'recipes/recipes_detail.html'
     context_object_name = 'recipe'
-    login_url = '/login'
 
     def get_queryset(self):
-        return Recipe.objects.filter(Q(author=self.request.user) | Q(is_public=True))
+        if self.request.user.is_authenticated:
+            return Recipe.objects.filter(Q(author=self.request.user) | Q(is_public=True))
+
+        return Recipe.objects.filter(is_public=True)
 
 
 class RecipeUpdateView(LoginRequiredMixin, UpdateView):
