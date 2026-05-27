@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.http import JsonResponse
 
 from django.views.generic import FormView, TemplateView
 from django.contrib.auth.forms import UserCreationForm
@@ -33,3 +34,7 @@ class FarewellView(TemplateView):
 class AuthorizedView(LoginRequiredMixin, TemplateView):
     template_name = 'home/authorized.html'
     login_url='/admin'
+
+
+def health_check(request):
+    return JsonResponse({'status': 'ok'})
